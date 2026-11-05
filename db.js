@@ -1,0 +1,252 @@
+const fs = require('fs');
+const path = require('path');
+
+const DB_DIR = path.join(__dirname, 'data');
+const DB_FILE = path.join(DB_DIR, 'db.json');
+
+// Initial schema
+const defaultData = {
+  users: [],
+  transactions: [],
+  rewards: [
+    {
+      id: 'REW-1',
+      title: 'ส่วนลด 50 บาท',
+      pointsRequired: 100,
+      description: 'ใช้เป็นส่วนลดสำหรับยอดซื้อขั้นต่ำ 200 บาท',
+      imageUrl: 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=400&fit=crop',
+      stock: 50
+    },
+    {
+      id: 'REW-2',
+      title: 'เครื่องดื่มฟรี 1 แก้ว',
+      pointsRequired: 200,
+      description: 'เลือกรับเครื่องดื่มเมนูใดก็ได้ 1 แก้วทันที',
+      imageUrl: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&fit=crop',
+      stock: 30
+    },
+    {
+      id: 'REW-3',
+      title: 'กระเป๋าผ้า Exclusive Limited',
+      pointsRequired: 500,
+      description: 'กระเป๋าผ้ารักษ์โลกสกรีนโลโก้พรีเมียม',
+      imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400&fit=crop',
+      stock: 15
+    }
+  ],
+  settings: {
+    pointsPerBaht: 1, // 1 บาท = 1 แต้ม
+    minSpendForPoints: 1,
+    shopName: 'น้ำพริกแม่เฉลา',
+    tiers: [
+      { name: 'Member', minSpend: 0 },
+      { name: 'Silver', minSpend: 1000 },
+      { name: 'Gold', minSpend: 5000 },
+      { name: 'Platinum', minSpend: 15000 }
+    ]
+  }
+};
+
+function ensureDb() {
+  if (!fs.existsSync(DB_DIR)) {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+  }
+  if (!fs.existsSync(DB_FILE)) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+  }
+}
+
+function readDb() {
+  ensureDb();
+  try {
+    const raw = fs.readFileSync(DB_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading db.json, returning default:', err);
+    return defaultData;
+  }
+}
+
+function writeDb(data) {
+  ensureDb();
+  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+}
+
+// Database helper operations
+const db = {
+  getSettings() {
+    return readDb().settings;
+  },
+
+  updateSettings(newSettings) {
+    const data = readDb();
+    data.settings = { ...data.settings, ...newSettings };
+    writeDb(data);
+    return data.settings;
+  },
+
+  getUsers() {
+    return readDb().users;
+  },
+
+  getUserById(idOrLineUserIdOrPhone) {
+    const users = readDb().users;
+    return users.find(
+      u => u.id === idOrLineUserIdOrPhone ||
+           u.lineUserId === idOrLineUserIdOrPhone ||
+           (u.phone && u.phone === idOrLineUserIdOrPhone)
+    );
+  },
+
+  findOrCreateUser({ lineUserId, displayName, pictureUrl, phone }) {
+    const data = readDb();
+    let user = data.users.find(u => (lineUserId && u.lineUserId === lineUserId) || (phone && u.phone === phone));
+
+    if (user) {
+      let changed = false;
+      if (displayName && user.displayName !== displayName) {
+        user.displayName = displayName;
+        changed = true;
+      }
+      if (pictureUrl && user.pictureUrl !== pictureUrl) {
+        user.pictureUrl = pictureUrl;
+        changed = true;
+      }
+      if (phone && !user.phone) {
+        user.phone = phone;
+        changed = true;
+      }
+      if (changed) writeDb(data);
+      return user;
+    }
+
+    // Create new user
+    const memberNumber = String(data.users.length + 1).padStart(4, '0');
+    user = {
+      id: `MEM-${memberNumber}`,
+      lineUserId: lineUserId || `USER-${Date.now()}`,
+      displayName: displayName || `ลูกค้าสมาชิก #${memberNumber}`,
+      pictureUrl: pictureUrl || '',
+      phone: phone || '',
+      points: 0,
+      totalSpent: 0,
+      tier: 'Member',
+      createdAt: new Date().toISOString()
+    };
+    data.users.push(user);
+    writeDb(data);
+    return user;
+  },
+
+  calculateTier(totalSpent, tiers) {
+    const sorted = [...tiers].sort((a, b) => b.minSpend - a.minSpend);
+    for (const t of sorted) {
+      if (totalSpent >= t.minSpend) {
+        return t.name;
+      }
+    }
+    return 'Member';
+  },
+
+  addPoints({ userId, amount, description = 'ซื้อสินค้า' }) {
+    const data = readDb();
+    const userIndex = data.users.findIndex(
+      u => u.id === userId || u.lineUserId === userId || u.phone === userId
+    );
+
+    if (userIndex === -1) {
+      throw new Error('ไม่พบข้อมูลสมาชิก');
+    }
+
+    const user = data.users[userIndex];
+    const settings = data.settings;
+    
+    // 1 บาท = 1 แต้ม (หรือตาม setting)
+    const pointsEarned = Math.floor(amount * (settings.pointsPerBaht || 1));
+    if (pointsEarned <= 0) {
+      throw new Error('ยอดซื้อต้องมากกว่า 0');
+    }
+
+    user.points = (user.points || 0) + pointsEarned;
+    user.totalSpent = (user.totalSpent || 0) + amount;
+    user.tier = this.calculateTier(user.totalSpent, settings.tiers);
+
+    const txnId = `TXN-${Date.now()}`;
+    const transaction = {
+      id: txnId,
+      userId: user.id,
+      type: 'EARN',
+      amount: Number(amount),
+      points: pointsEarned,
+      balanceAfter: user.points,
+      description: description || `ซื้อสินค้า ฿${Number(amount).toLocaleString()}`,
+      createdAt: new Date().toISOString()
+    };
+
+    data.transactions.unshift(transaction);
+    writeDb(data);
+
+    return { user, transaction, pointsEarned };
+  },
+
+  redeemReward({ userId, rewardId }) {
+    const data = readDb();
+    const userIndex = data.users.findIndex(
+      u => u.id === userId || u.lineUserId === userId
+    );
+
+    if (userIndex === -1) {
+      throw new Error('ไม่พบข้อมูลสมาชิก');
+    }
+
+    const reward = data.rewards.find(r => r.id === rewardId);
+    if (!reward) {
+      throw new Error('ไม่พบของรางวัลนี้');
+    }
+
+    const user = data.users[userIndex];
+    if (user.points < reward.pointsRequired) {
+      throw new Error(`แต้มสะสมไม่เพียงพอ (ต้องการ ${reward.pointsRequired} แต้ม แต่คุณมี ${user.points} แต้ม)`);
+    }
+
+    if (reward.stock <= 0) {
+      throw new Error('ของรางวัลนี้หมดแล้ว');
+    }
+
+    user.points -= reward.pointsRequired;
+    reward.stock -= 1;
+
+    const txnId = `TXN-RED-${Date.now()}`;
+    const transaction = {
+      id: txnId,
+      userId: user.id,
+      type: 'REDEEM',
+      amount: 0,
+      points: -reward.pointsRequired,
+      balanceAfter: user.points,
+      description: `แลกของรางวัล: ${reward.title}`,
+      createdAt: new Date().toISOString()
+    };
+
+    data.transactions.unshift(transaction);
+    writeDb(data);
+
+    return { user, transaction, reward };
+  },
+
+  getTransactionsByUser(userId) {
+    const data = readDb();
+    return data.transactions.filter(t => t.userId === userId);
+  },
+
+  getAllTransactions(limit = 50) {
+    const data = readDb();
+    return data.transactions.slice(0, limit);
+  },
+
+  getRewards() {
+    return readDb().rewards;
+  }
+};
+
+module.exports = db;

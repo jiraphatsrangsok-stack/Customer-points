@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบบริหารจัดการแต้มสะสม LINE OA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-20">
+
+  <!-- Header Banner -->
+  <header class="bg-slate-900 text-white border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center font-black text-2xl text-white shadow-lg shadow-emerald-500/20">
+          ฿
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-xl font-bold tracking-tight">ระบบบริหารจัดการแต้มสะสม LINE OA</h1>
+            <span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-emerald-500/30">1 บาท = 1 แต้ม</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-0.5" id="shopSubTitle">ระบบจัดการสมาชิก แต้มสะสม และประวัติการทำรายการ</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <a href="/cashier/" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow transition">
+          <i data-lucide="store" class="w-4 h-4"></i>
+          <span>เปิดหน้าจอแคชเชียร์หน้าร้าน</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- Overview Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">สมาชิกทั้งหมด</p>
+          <p id="statMembers" class="text-2xl font-black text-slate-900 mt-0.5">0 คน</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <i data-lucide="coins" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">แต้มสะสมคงเหลือในระบบ</p>
+          <p id="statPoints" class="text-2xl font-black text-emerald-600 mt-0.5">0 แต้ม</p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center space-x-4">
+        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <i data-lucide="banknote" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-400 font-medium">ยอดซื้อรวมผ่านระบบ</p>
+          <p id="statSpent" class="text-2xl font-black text-slate-900 mt-0.5">฿0</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIFF Link Banner for Rich Menu -->
+    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="smartphone" class="w-5 h-5 text-emerald-300"></i>
+          <h3 class="font-bold text-base">ลิงก์บัตรสมาชิก LIFF สำหรับใส่ใน Rich Menu LINE OA</h3>
+        </div>
+        <p class="text-xs text-emerald-100">นำลิงก์นี้ไปผูกกับปุ่ม "บัตรสมาชิก / เช็คแต้ม" ใน LINE Official Account Manager</p>
+      </div>
+      <div class="flex items-center space-x-2 bg-emerald-950/40 p-2 rounded-2xl border border-emerald-400/30">
+        <code id="liffUrlCode" class="text-xs font-mono px-3 text-emerald-200 select-all">https://liff.line.me/2012400848-86Z8gVyN</code>
+        <button onclick="copyLiffUrl()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span>คัดลอก</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Members Table -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i>
+            <span>รายชื่อสมาชิกร้านค้า</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">ข้อมูลสมาชิกที่เปิดบัตรผ่าน LINE OA</p>
+        </div>
+        <button onclick="loadDashboardData()" class="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="text-slate-400 border-b border-slate-100">
+              <th class="py-3 px-4">รหัสสมาชิก</th>
+              <th class="py-3 px-4">ชื่อสมาชิก</th>
+              <th class="py-3 px-4">ระดับ (Tier)</th>
+              <th class="py-3 px-4 text-right">ยอดซื้อสะสม</th>
+              <th class="py-3 px-4 text-right">แต้มคงเหลือ</th>
+              <th class="py-3 px-4 text-center">วันที่สมัคร</th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <tr>
+              <td colspan="6" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Transactions Table -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+      <div class="pb-3 border-b border-slate-100">
+        <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+          <i data-lucide="receipt" class="w-5 h-5 text-blue-600"></i>
+          <span>ประวัติการทำรายการล่าสุด</span>
+        </h2>
+        <p class="text-xs text-slate-400 mt-0.5">ประวัติการสะสมแต้มและการแลกของรางวัล</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="text-slate-400 border-b border-slate-100">
+              <th class="py-3 px-4">รหัสบิล</th>
+              <th class="py-3 px-4">รหัสสมาชิก</th>
+              <th class="py-3 px-4">รายการ</th>
+              <th class="py-3 px-4 text-right">ยอดเงิน</th>
+              <th class="py-3 px-4 text-right">แต้ม</th>
+              <th class="py-3 px-4 text-right">คงเหลือ</th>
+              <th class="py-3 px-4 text-center">เวลา</th>
+            </tr>
+          </thead>
+          <tbody id="txnsTableBody">
+            <tr>
+              <td colspan="7" class="text-center py-8 text-slate-400">ยังไม่มีประวัติการทำรายการ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    async function init() {
+      lucide.createIcons();
+      await loadDashboardData();
+    }
+
+    async function loadDashboardData() {
+      try {
+        // 1. Settings
+        const sRes = await fetch('/api/settings');
+        const sJson = await sRes.json();
+        if (sJson.success) {
+          const liffId = sJson.data.liffId;
+          document.getElementById('liffUrlCode').innerText = liffId 
+            ? `https://liff.line.me/${liffId}` 
+            : 'กรุณาระบุ LINE_LIFF_ID ในไฟล์ .env';
+          document.getElementById('shopSubTitle').innerText = `${sJson.data.shopName || 'ร้านค้า'} • ระบบสะสมแต้ม 1 บาท = 1 แต้ม`;
+        }
+
+        // 2. Members
+        const mRes = await fetch('/api/admin/members');
+        const mJson = await mRes.json();
+        const members = mJson.data || [];
+
+        // 3. Transactions
+        const tRes = await fetch('/api/admin/transactions');
+        const tJson = await tRes.json();
+        const txns = tJson.data || [];
+
+        // Calculate Stats
+        const totalPoints = members.reduce((sum, u) => sum + (u.points || 0), 0);
+        const totalSpent = members.reduce((sum, u) => sum + (u.totalSpent || 0), 0);
+
+        document.getElementById('statMembers').innerText = `${members.length.toLocaleString()} คน`;
+        document.getElementById('statPoints').innerText = `${totalPoints.toLocaleString()} แต้ม`;
+        document.getElementById('statSpent').innerText = `฿${totalSpent.toLocaleString()}`;
+
+        // Render Members Table
+        const mBody = document.getElementById('membersTableBody');
+        if (members.length === 0) {
+          mBody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก (รอสมาชิกลงทะเบียนผ่าน LINE OA)</td></tr>`;
+        } else {
+          mBody.innerHTML = members.map(m => {
+            const dateStr = new Date(m.createdAt).toLocaleDateString('th-TH');
+            return `
+              <tr class="border-b border-slate-50 hover:bg-slate-50/50">
+                <td class="py-3 px-4 font-mono font-bold text-slate-700">${m.id}</td>
+                <td class="py-3 px-4 font-semibold text-slate-800 flex items-center space-x-2">
+                  ${m.pictureUrl ? `<img src="${m.pictureUrl}" class="w-6 h-6 rounded-full object-cover">` : ''}
+                  <span>${m.displayName}</span>
+                </td>
+                <td class="py-3 px-4"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px] font-bold">${m.tier || 'Member'}</span></td>
+                <td class="py-3 px-4 text-right font-medium">฿${Number(m.totalSpent || 0).toLocaleString()}</td>
+                <td class="py-3 px-4 text-right font-bold text-emerald-600">${Number(m.points || 0).toLocaleString()} แต้ม</td>
+                <td class="py-3 px-4 text-center text-slate-400">${dateStr}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+        // Render Transactions Table
+        const tBody = document.getElementById('txnsTableBody');
+        if (txns.length === 0) {
+          tBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">ยังไม่มีประวัติการทำรายการ</td></tr>`;
+        } else {
+          tBody.innerHTML = txns.slice(0, 15).map(t => {
+            const isEarn = t.type === 'EARN';
+            const dateStr = new Date(t.createdAt).toLocaleString('th-TH');
+            return `
+              <tr class="border-b border-slate-50 hover:bg-slate-50/50">
+                <td class="py-3 px-4 font-mono text-slate-500">${t.id}</td>
+                <td class="py-3 px-4 font-mono font-bold text-slate-700">${t.userId}</td>
+                <td class="py-3 px-4 text-slate-800">${t.description}</td>
+                <td class="py-3 px-4 text-right text-slate-600">฿${Number(t.amount || 0).toLocaleString()}</td>
+                <td class="py-3 px-4 text-right font-bold ${isEarn ? 'text-emerald-600' : 'text-rose-600'}">
+                  ${isEarn ? '+' : ''}${Number(t.points).toLocaleString()}
+                </td>
+                <td class="py-3 px-4 text-right font-medium text-slate-700">${Number(t.balanceAfter).toLocaleString()}</td>
+                <td class="py-3 px-4 text-center text-slate-400">${dateStr}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+        lucide.createIcons();
+      } catch (e) {
+        console.error('Failed to load dashboard:', e);
+      }
+    }
+
+    function copyLiffUrl() {
+      const code = document.getElementById('liffUrlCode').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        alert('คัดลอกลิงก์ LIFF เรียบร้อยแล้ว:\n' + code);
+      }).catch(() => {
+        prompt('คัดลอกลิงก์นี้ไปใส่ใน Rich Menu:', code);
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

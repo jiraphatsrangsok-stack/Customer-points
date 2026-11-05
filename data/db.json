@@ -1,0 +1,55 @@
+{
+  "users": [],
+  "transactions": [],
+  "rewards": [
+    {
+      "id": "REW-1",
+      "title": "ส่วนลด 50 บาท",
+      "pointsRequired": 100,
+      "description": "ใช้เป็นส่วนลดสำหรับยอดซื้อขั้นต่ำ 200 บาท",
+      "imageUrl": "https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=400&fit=crop",
+      "stock": 50
+    },
+    {
+      "id": "REW-2",
+      "title": "เครื่องดื่มฟรี 1 แก้ว",
+      "pointsRequired": 200,
+      "description": "เลือกรับเครื่องดื่มเมนูใดก็ได้ 1 แก้วทันที",
+      "imageUrl": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&fit=crop",
+      "stock": 30
+    },
+    {
+      "id": "REW-3",
+      "title": "กระเป๋าผ้า Exclusive Limited",
+      "pointsRequired": 500,
+      "description": "กระเป๋าผ้ารักษ์โลกสกรีนโลโก้พรีเมียม",
+      "imageUrl": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=400&fit=crop",
+      "stock": 15
+    }
+  ],
+  "settings": {
+    "pointsPerBaht": 1,
+    "minSpendForPoints": 1,
+    "shopName": "น้ำพริกแม่เฉลา",
+    "liffId": "2012400848-86Z8gVyN",
+    "channelSecret": "c238e7ce6eebbd7ce3b257ada582425d",
+    "tiers": [
+      {
+        "name": "Member",
+        "minSpend": 0
+      },
+      {
+        "name": "Silver",
+        "minSpend": 1000
+      },
+      {
+        "name": "Gold",
+        "minSpend": 5000
+      },
+      {
+        "name": "Platinum",
+        "minSpend": 15000
+      }
+    ]
+  }
+}
