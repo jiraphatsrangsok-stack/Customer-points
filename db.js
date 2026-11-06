@@ -246,6 +246,49 @@ const db = {
 
   getRewards() {
     return readDb().rewards;
+  },
+
+  addReward({ title, pointsRequired, description, imageUrl, stock }) {
+    const data = readDb();
+    const id = `REW-${Date.now()}`;
+    const newReward = {
+      id,
+      title: title || 'ของรางวัลใหม่',
+      pointsRequired: Number(pointsRequired) || 10,
+      description: description || '',
+      imageUrl: imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&fit=crop',
+      stock: Number(stock) || 10
+    };
+    data.rewards.push(newReward);
+    writeDb(data);
+    return newReward;
+  },
+
+  updateReward(id, updatedFields) {
+    const data = readDb();
+    const idx = data.rewards.findIndex(r => r.id === id);
+    if (idx === -1) {
+      throw new Error('ไม่พบของรางวัลที่ต้องการแก้ไข');
+    }
+    data.rewards[idx] = {
+      ...data.rewards[idx],
+      ...updatedFields,
+      pointsRequired: Number(updatedFields.pointsRequired ?? data.rewards[idx].pointsRequired),
+      stock: Number(updatedFields.stock ?? data.rewards[idx].stock)
+    };
+    writeDb(data);
+    return data.rewards[idx];
+  },
+
+  deleteReward(id) {
+    const data = readDb();
+    const idx = data.rewards.findIndex(r => r.id === id);
+    if (idx === -1) {
+      throw new Error('ไม่พบของรางวัลที่ต้องการลบ');
+    }
+    const deleted = data.rewards.splice(idx, 1)[0];
+    writeDb(data);
+    return deleted;
   }
 };
 

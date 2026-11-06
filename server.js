@@ -220,6 +220,52 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // 6.1 POST /api/admin/rewards (เพิ่มของรางวัลใหม่)
+  if (pathname === '/api/admin/rewards' && method === 'POST') {
+    const body = await parseBody(req);
+    try {
+      const newReward = db.addReward(body);
+      return sendJson(res, 200, {
+        success: true,
+        message: 'เพิ่มของรางวัลสำเร็จ',
+        data: newReward
+      });
+    } catch (err) {
+      return sendJson(res, 400, { success: false, message: err.message });
+    }
+  }
+
+  // 6.2 PUT /api/admin/rewards/:id (แก้ไขของรางวัล)
+  if (pathname.startsWith('/api/admin/rewards/') && (method === 'PUT' || method === 'POST')) {
+    const rewardId = pathname.replace('/api/admin/rewards/', '').trim();
+    const body = await parseBody(req);
+    try {
+      const updated = db.updateReward(rewardId, body);
+      return sendJson(res, 200, {
+        success: true,
+        message: 'บันทึกการแก้ไขของรางวัลสำเร็จ',
+        data: updated
+      });
+    } catch (err) {
+      return sendJson(res, 400, { success: false, message: err.message });
+    }
+  }
+
+  // 6.3 DELETE /api/admin/rewards/:id (ลบของรางวัล)
+  if (pathname.startsWith('/api/admin/rewards/') && method === 'DELETE') {
+    const rewardId = pathname.replace('/api/admin/rewards/', '').trim();
+    try {
+      const deleted = db.deleteReward(rewardId);
+      return sendJson(res, 200, {
+        success: true,
+        message: 'ลบของรางวัลสำเร็จ',
+        data: deleted
+      });
+    } catch (err) {
+      return sendJson(res, 400, { success: false, message: err.message });
+    }
+  }
+
   // 7. GET /api/admin/members
   if (pathname === '/api/admin/members' && method === 'GET') {
     const users = db.getUsers();

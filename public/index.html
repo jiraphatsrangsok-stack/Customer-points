@@ -127,6 +127,28 @@
       </div>
     </div>
 
+    <!-- Rewards Management Section -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <i data-lucide="gift" class="w-5 h-5 text-emerald-600"></i>
+            <span>จัดการของรางวัล (Reward Catalog)</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">เพิ่ม แก้ไข หรือลบของรางวัลที่ให้ลูกค้าใช้แต้มแลก</p>
+        </div>
+        <button onclick="openRewardModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>เพิ่มของรางวัลใหม่</span>
+        </button>
+      </div>
+
+      <!-- Rewards Grid -->
+      <div id="rewardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
     <!-- Recent Transactions Table -->
     <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
       <div class="pb-3 border-b border-slate-100">
@@ -161,10 +183,247 @@
 
   </main>
 
+  <!-- Reward Add / Edit Modal -->
+  <div id="rewardModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl animate-in fade-in zoom-in duration-150">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+        <h3 id="modalTitle" class="font-bold text-slate-800 text-base">เพิ่มของรางวัลใหม่</h3>
+        <button onclick="closeRewardModal()" class="text-slate-400 hover:text-slate-600 p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="rewardForm" onsubmit="saveReward(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="rwId">
+
+        <div class="space-y-1">
+          <label class="font-semibold text-slate-700">ชื่อของรางวัล <span class="text-rose-500">*</span></label>
+          <input type="text" id="rwTitle" required placeholder="เช่น ฟรี! น้ำพริกกระปุกเล็ก 1 กระปุก, ส่วนลด 50 บาท"
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="font-semibold text-slate-700">แต้มที่ต้องใช้ <span class="text-rose-500">*</span></label>
+            <input type="number" id="rwPoints" required min="1" placeholder="เช่น 50"
+                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-600">
+          </div>
+          <div class="space-y-1">
+            <label class="font-semibold text-slate-700">จำนวนสต็อก (ชิ้น) <span class="text-rose-500">*</span></label>
+            <input type="number" id="rwStock" required min="0" placeholder="เช่น 50"
+                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-semibold text-slate-700">ลิงก์รูปภาพ (Image URL)</label>
+          <input type="url" id="rwImage" placeholder="https://..."
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-[11px]">
+          <!-- Quick Preset Images -->
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            <button type="button" onclick="setPresetImg('chili')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600">รูปน้ำพริก</button>
+            <button type="button" onclick="setPresetImg('discount')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600">รูปส่วนลด</button>
+            <button type="button" onclick="setPresetImg('gift')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600">รูปของขวัญ</button>
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="font-semibold text-slate-700">คำอธิบาย / เงื่อนไขการใช้</label>
+          <textarea id="rwDesc" rows="2" placeholder="เช่น ใช้เป็นส่วนลดเมื่อซื้อครบ 100 บาทขึ้นไป"
+                    class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+        </div>
+
+        <div class="pt-2 flex space-x-2">
+          <button type="button" onclick="closeRewardModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+            ยกเลิก
+          </button>
+          <button type="submit" id="saveRewardBtn" class="flex-1 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition shadow">
+            บันทึกของรางวัล
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
+    let rewardsData = [];
+
     async function init() {
       lucide.createIcons();
       await loadDashboardData();
+      await loadRewards();
+    }
+
+    async function loadRewards() {
+      try {
+        const res = await fetch('/api/rewards');
+        const json = await res.json();
+        if (json.success) {
+          rewardsData = json.data || [];
+          renderRewardsGrid(rewardsData);
+        }
+      } catch (e) {
+        console.error('Failed to load rewards:', e);
+      }
+    }
+
+    function renderRewardsGrid(rewards) {
+      const grid = document.getElementById('rewardsGrid');
+      if (!rewards || rewards.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-8 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+            <i data-lucide="gift" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+            <p class="text-xs">ยังไม่มีของรางวัลในระบบ กดปุ่ม "เพิ่มของรางวัลใหม่" ด้านบนเพื่อเริ่มสร้าง</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = rewards.map(r => {
+        return `
+          <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200 flex flex-col justify-between hover:shadow-sm transition">
+            <div class="relative">
+              <img src="${r.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&fit=crop'}" 
+                   class="w-full h-36 object-cover" alt="${r.title}">
+              <div class="absolute top-2 right-2 flex space-x-1">
+                <span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">
+                  ${Number(r.pointsRequired).toLocaleString()} แต้ม
+                </span>
+              </div>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+              <div>
+                <div class="flex justify-between items-start">
+                  <h4 class="font-bold text-slate-800 text-sm leading-tight">${r.title}</h4>
+                </div>
+                <p class="text-xs text-slate-500 mt-1 line-clamp-2">${r.description || 'ไม่มีคำอธิบาย'}</p>
+                <div class="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+                  <span>คงเหลือ: <strong class="text-slate-700">${r.stock}</strong> ชิ้น</span>
+                  <span class="font-mono text-[10px] text-slate-400">${r.id}</span>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-200 flex space-x-2">
+                <button onclick="openEditRewardModal('${r.id}')" 
+                        class="flex-1 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-semibold flex items-center justify-center space-x-1 transition">
+                  <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                  <span>แก้ไข</span>
+                </button>
+                <button onclick="deleteReward('${r.id}', '${r.title}')" 
+                        class="px-2.5 py-1.5 rounded-lg bg-white border border-rose-200 hover:bg-rose-50 text-rose-600 text-xs font-semibold transition" title="ลบ">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function openRewardModal() {
+      document.getElementById('modalTitle').innerText = 'เพิ่มของรางวัลใหม่';
+      document.getElementById('rwId').value = '';
+      document.getElementById('rwTitle').value = '';
+      document.getElementById('rwPoints').value = '50';
+      document.getElementById('rwStock').value = '50';
+      document.getElementById('rwImage').value = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&fit=crop';
+      document.getElementById('rwDesc').value = '';
+      document.getElementById('rewardModal').classList.remove('hidden');
+    }
+
+    function openEditRewardModal(id) {
+      const reward = rewardsData.find(r => r.id === id);
+      if (!reward) return;
+
+      document.getElementById('modalTitle').innerText = 'แก้ไขของรางวัล';
+      document.getElementById('rwId').value = reward.id;
+      document.getElementById('rwTitle').value = reward.title;
+      document.getElementById('rwPoints').value = reward.pointsRequired;
+      document.getElementById('rwStock').value = reward.stock;
+      document.getElementById('rwImage').value = reward.imageUrl || '';
+      document.getElementById('rwDesc').value = reward.description || '';
+      document.getElementById('rewardModal').classList.remove('hidden');
+    }
+
+    function closeRewardModal() {
+      document.getElementById('rewardModal').classList.add('hidden');
+    }
+
+    function setPresetImg(type) {
+      const imgInput = document.getElementById('rwImage');
+      if (type === 'chili') {
+        imgInput.value = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&fit=crop';
+      } else if (type === 'discount') {
+        imgInput.value = 'https://images.unsplash.com/photo-1556742049-0a67c5574f73?w=400&fit=crop';
+      } else if (type === 'gift') {
+        imgInput.value = 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&fit=crop';
+      }
+    }
+
+    async function saveReward(e) {
+      e.preventDefault();
+      const id = document.getElementById('rwId').value.trim();
+      const title = document.getElementById('rwTitle').value.trim();
+      const points = parseInt(document.getElementById('rwPoints').value);
+      const stock = parseInt(document.getElementById('rwStock').value);
+      const image = document.getElementById('rwImage').value.trim();
+      const desc = document.getElementById('rwDesc').value.trim();
+
+      const btn = document.getElementById('saveRewardBtn');
+      btn.disabled = true;
+
+      const payload = {
+        title,
+        pointsRequired: points,
+        stock,
+        imageUrl: image,
+        description: desc
+      };
+
+      try {
+        const url = id ? `/api/admin/rewards/${id}` : '/api/admin/rewards';
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+        if (json.success) {
+          closeRewardModal();
+          await loadRewards();
+          alert(json.message);
+        } else {
+          alert('เกิดข้อผิดพลาด: ' + json.message);
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาดในการบันทึก: ' + err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function deleteReward(id, title) {
+      if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบของรางวัล "${title}"?`)) return;
+
+      try {
+        const res = await fetch(`/api/admin/rewards/${id}`, {
+          method: 'DELETE'
+        });
+        const json = await res.json();
+        if (json.success) {
+          await loadRewards();
+          alert(json.message);
+        } else {
+          alert('ลบไม่สำเร็จ: ' + json.message);
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      }
     }
 
     async function loadDashboardData() {

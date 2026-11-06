@@ -151,6 +151,46 @@
       </button>
     </div>
 
+    <!-- Card 3: Cashier Redeem Rewards for Customer -->
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div>
+          <h2 class="font-bold text-base text-slate-800 flex items-center space-x-2">
+            <i data-lucide="gift" class="w-5 h-5 text-amber-500"></i>
+            <span>3. แลกของรางวัลให้ลูกค้า (ใช้แต้มลด/รับของ)</span>
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5">เลือกของรางวัลเพื่อตัดแต้มให้ลูกค้าที่เคาน์เตอร์คิดเงิน</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-slate-500">เลือกของรางวัลที่ต้องการแลก</label>
+          <select id="cashierRewardSelect" onchange="updateCashierRewardPreview()"
+                  class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold text-slate-700">
+            <option value="">-- กรุณาเลือกของรางวัล --</option>
+          </select>
+        </div>
+
+        <div id="cashierRewardInfo" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <p id="cRwTitle" class="font-bold text-xs text-amber-900">-</p>
+            <p id="cRwDesc" class="text-[11px] text-amber-700 mt-0.5">-</p>
+          </div>
+          <div class="text-right">
+            <span id="cRwPoints" class="text-xl font-black text-amber-700">0</span>
+            <span class="text-xs font-bold text-amber-800">แต้ม</span>
+          </div>
+        </div>
+
+        <button onclick="submitCashierRedeem()" id="cashierRedeemBtn" disabled
+                class="w-full bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99] text-white py-3.5 rounded-2xl font-bold text-sm shadow-md transition flex items-center justify-center space-x-2">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>ยืนยันการตัดแต้มแลกรางวัล</span>
+        </button>
+      </div>
+    </div>
+
     <!-- Recent Transactions at Checkout -->
     <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-3">
       <h3 class="font-bold text-sm text-slate-700 flex items-center space-x-2">
@@ -201,10 +241,119 @@
     let activeCustomer = null;
     let html5QrCode = null;
     let isScannerRunning = false;
+    let cashierRewards = [];
 
     async function init() {
       lucide.createIcons();
       await loadRecentTxns();
+      await loadCashierRewards();
+    }
+
+    async function loadCashierRewards() {
+      try {
+        const res = await fetch('/api/rewards');
+        const json = await res.json();
+        if (json.success) {
+          cashierRewards = json.data || [];
+          const select = document.getElementById('cashierRewardSelect');
+          select.innerHTML = '<option value="">-- กรุณาเลือกของรางวัล --</option>' + 
+            cashierRewards.map(r => `
+              <option value="${r.id}">${r.title} (ใช้ ${r.pointsRequired} แต้ม | เหลือ ${r.stock} ชิ้น)</option>
+            `).join('');
+        }
+      } catch (e) {
+        console.warn('Failed to load rewards for cashier:', e);
+      }
+    }
+
+    function updateCashierRewardPreview() {
+      const select = document.getElementById('cashierRewardSelect');
+      const rewardId = select.value;
+      const infoBox = document.getElementById('cashierRewardInfo');
+      const btn = document.getElementById('cashierRedeemBtn');
+
+      if (!rewardId) {
+        infoBox.classList.add('hidden');
+        btn.disabled = true;
+        return;
+      }
+
+      const reward = cashierRewards.find(r => r.id === rewardId);
+      if (!reward) return;
+
+      document.getElementById('cRwTitle').innerText = reward.title;
+      document.getElementById('cRwDesc').innerText = reward.description || `คงเหลือ ${reward.stock} ชิ้น`;
+      document.getElementById('cRwPoints').innerText = reward.pointsRequired;
+      infoBox.classList.remove('hidden');
+
+      if (!activeCustomer) {
+        btn.disabled = true;
+        btn.innerText = 'กรุณาระบุข้อมูลลูกค้าก่อน';
+        return;
+      }
+
+      const custPoints = Number(activeCustomer.points || 0);
+      if (custPoints < reward.pointsRequired) {
+        btn.disabled = true;
+        btn.innerText = `แต้มไม่พอ (ลูกค้ามี ${custPoints} แต้ม / ต้องใช้ ${reward.pointsRequired} แต้ม)`;
+      } else if (reward.stock <= 0) {
+        btn.disabled = true;
+        btn.innerText = 'ของรางวัลนี้หมดสต็อกแล้ว';
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="sparkles" class="w-4 h-4"></i><span>ยืนยันตัด ${reward.pointsRequired} แต้ม แลกรางวัล</span>`;
+        lucide.createIcons();
+      }
+    }
+
+    async function submitCashierRedeem() {
+      if (!activeCustomer) {
+        alert('กรุณาระบุลูกค้าก่อน');
+        return;
+      }
+
+      const rewardId = document.getElementById('cashierRewardSelect').value;
+      const reward = cashierRewards.find(r => r.id === rewardId);
+      if (!reward) return;
+
+      if (!confirm(`ยืนยันการตัด ${reward.pointsRequired} แต้ม ของคุณ ${activeCustomer.displayName} เพื่อแลก "${reward.title}"?`)) return;
+
+      const btn = document.getElementById('cashierRedeemBtn');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/rewards/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: activeCustomer.id,
+            rewardId: reward.id
+          })
+        });
+
+        const json = await res.json();
+        if (json.success) {
+          activeCustomer = json.data.user;
+          document.getElementById('mPoints').innerText = Number(activeCustomer.points).toLocaleString();
+
+          document.getElementById('succCustomer').innerText = activeCustomer.displayName;
+          document.getElementById('succAmount').innerText = 'แลกของรางวัล';
+          document.getElementById('succPoints').innerText = `-${reward.pointsRequired} แต้ม`;
+          document.getElementById('succNewBalance').innerText = `${activeCustomer.points.toLocaleString()} แต้ม`;
+          document.getElementById('successModal').classList.remove('hidden');
+
+          document.getElementById('cashierRewardSelect').value = '';
+          updateCashierRewardPreview();
+          loadRecentTxns();
+          loadCashierRewards();
+        } else {
+          alert('แลกรางวัลไม่สำเร็จ: ' + json.message);
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      } finally {
+        btn.disabled = false;
+      }
     }
 
     async function lookupMember(idOverride) {
@@ -227,10 +376,12 @@
             document.getElementById('mAvatar').src = activeCustomer.pictureUrl;
           }
           document.getElementById('memberFoundCard').classList.remove('hidden');
+          updateCashierRewardPreview();
         } else {
           alert('ไม่พบข้อมูลสมาชิก: ' + json.message);
           document.getElementById('memberFoundCard').classList.add('hidden');
           activeCustomer = null;
+          updateCashierRewardPreview();
         }
       } catch (err) {
         alert('เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์: ' + err.message);
