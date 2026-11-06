@@ -1,17 +1,5 @@
 {
-  "users": [
-    {
-      "id": "MEM-0001",
-      "lineUserId": "U66a1fb280700b43a07b0c879c521cf63",
-      "displayName": "Jiraphat",
-      "pictureUrl": "https://profile.line-scdn.net/0h1_4cR_bzbnAZGnGTCsIQTmlKbRo6azdiNXkmRSkbMBQjKi0vZn8hQShOZ0RzKi0kZ3wiRioYMxI7KntzTQxFF19MRDVFK0khTRpUE0IbYgBRIzVPaCVRX39qSxV2QlpSaCF4RHlzdj1sQnwgTRtGbFMaVCBbbU9bXk0CJhwoAPN2GBklNHwiEy0bOUWt",
-      "phone": "",
-      "points": 0,
-      "totalSpent": 0,
-      "tier": "Member",
-      "createdAt": "2026-11-06T02:15:51.856Z"
-    }
-  ],
+  "users": [],
   "transactions": [],
   "rewards": [
     {

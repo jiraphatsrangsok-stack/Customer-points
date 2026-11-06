@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_DIR = path.join(__dirname, 'data');
-const DB_FILE = path.join(DB_DIR, 'db.json');
+const LOCAL_DB_DIR = path.join(__dirname, 'data');
+const LOCAL_DB_FILE = path.join(LOCAL_DB_DIR, 'db.json');
 
 // Initial schema
 const defaultData = {
@@ -47,29 +47,86 @@ const defaultData = {
   }
 };
 
-function ensureDb() {
-  if (!fs.existsSync(DB_DIR)) {
-    fs.mkdirSync(DB_DIR, { recursive: true });
+let resolvedDbFile = null;
+
+function getDbFile() {
+  if (resolvedDbFile) return resolvedDbFile;
+
+  // ตรวจจับ Vercel / AWS Lambda Serverless read-only environment
+  const isServerless = Boolean(
+    process.env.VERCEL || 
+    process.env.AWS_LAMBDA_FUNCTION_NAME || 
+    (process.cwd() && process.cwd().startsWith('/var/task')) ||
+    (__dirname && __dirname.startsWith('/var/task'))
+  );
+
+  if (isServerless) {
+    const tmpFile = path.join('/tmp', 'db.json');
+    if (!fs.existsSync(tmpFile)) {
+      if (fs.existsSync(LOCAL_DB_FILE)) {
+        try {
+          fs.copyFileSync(LOCAL_DB_FILE, tmpFile);
+        } catch (e) {
+          fs.writeFileSync(tmpFile, JSON.stringify(defaultData, null, 2), 'utf-8');
+        }
+      } else {
+        fs.writeFileSync(tmpFile, JSON.stringify(defaultData, null, 2), 'utf-8');
+      }
+    }
+    resolvedDbFile = tmpFile;
+    return resolvedDbFile;
   }
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+
+  // เครื่อง Local ปกติ (Windows / Linux)
+  try {
+    if (!fs.existsSync(LOCAL_DB_DIR)) {
+      fs.mkdirSync(LOCAL_DB_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(LOCAL_DB_FILE)) {
+      fs.writeFileSync(LOCAL_DB_FILE, JSON.stringify(defaultData, null, 2), 'utf-8');
+    }
+    resolvedDbFile = LOCAL_DB_FILE;
+  } catch (err) {
+    const tmpFile = path.join('/tmp', 'db.json');
+    if (!fs.existsSync(tmpFile)) {
+      fs.writeFileSync(tmpFile, JSON.stringify(defaultData, null, 2), 'utf-8');
+    }
+    resolvedDbFile = tmpFile;
   }
+
+  return resolvedDbFile;
 }
 
 function readDb() {
-  ensureDb();
+  const file = getDbFile();
   try {
-    const raw = fs.readFileSync(DB_FILE, 'utf-8');
+    const raw = fs.readFileSync(file, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
-    console.error('Error reading db.json, returning default:', err);
+    console.error('Error reading db.json:', err);
+    if (fs.existsSync(LOCAL_DB_FILE)) {
+      try {
+        return JSON.parse(fs.readFileSync(LOCAL_DB_FILE, 'utf-8'));
+      } catch (e) {}
+    }
     return defaultData;
   }
 }
 
 function writeDb(data) {
-  ensureDb();
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
+  let file = getDbFile();
+  try {
+    fs.writeFileSync(file, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (err) {
+    // ถ้าเจอ EROFS (Read-only บน Vercel) ให้สลับไปใช้ /tmp ทันที
+    if (err.code === 'EROFS' || (err.message && err.message.includes('read-only'))) {
+      const tmpFile = path.join('/tmp', 'db.json');
+      resolvedDbFile = tmpFile;
+      fs.writeFileSync(tmpFile, JSON.stringify(data, null, 2), 'utf-8');
+    } else {
+      throw err;
+    }
+  }
 }
 
 // Database helper operations
