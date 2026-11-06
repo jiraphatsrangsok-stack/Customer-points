@@ -19,12 +19,12 @@
   <!-- Navbar -->
   <nav class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between shadow-md">
     <div class="flex items-center space-x-3">
-      <div class="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">
+      <div class="w-9 h-9 rounded-xl bg-[#7a0c1e] flex items-center justify-center font-bold text-lg text-white shadow-md shadow-rose-950/30">
         ฿
       </div>
       <div>
         <h1 class="font-bold text-base leading-tight">ระบบแคชเชียร์สะสมแต้ม (Staff Portal)</h1>
-        <p class="text-xs text-slate-400">อัตราส่วน: 1 บาท = 1 แต้ม</p>
+        <p class="text-xs text-rose-300">อัตราส่วน: 1 บาท = 1 แต้ม</p>
       </div>
     </div>
     <a href="/" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg transition flex items-center space-x-1">
@@ -39,17 +39,17 @@
     <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h2 class="font-bold text-base text-slate-800 flex items-center space-x-2">
-          <i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i>
+          <i data-lucide="user-check" class="w-5 h-5 text-[#7a0c1e]"></i>
           <span>1. ระบุข้อมูลลูกค้า</span>
         </h2>
-        <button id="toggleScannerBtn" onclick="toggleCameraScanner()" class="text-xs font-semibold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
+        <button id="toggleScannerBtn" onclick="toggleCameraScanner()" class="text-xs font-semibold text-[#7a0c1e] bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl transition flex items-center space-x-1.5">
           <i data-lucide="camera" class="w-4 h-4"></i>
           <span id="scannerBtnText">เปิดกล้องสแกน QR</span>
         </button>
       </div>
 
       <!-- Camera QR Scanner Viewport (Hidden by default) -->
-      <div id="scannerSection" class="hidden rounded-2xl overflow-hidden border-2 border-dashed border-emerald-400 bg-slate-900 p-2">
+      <div id="scannerSection" class="hidden rounded-2xl overflow-hidden border-2 border-dashed border-rose-400 bg-slate-900 p-2">
         <div id="reader" class="w-full"></div>
         <p class="text-center text-xs text-slate-400 py-2">นำกล้องไปส่องที่ QR Code สมาชิกใน LINE ของลูกค้า</p>
       </div>
@@ -61,19 +61,19 @@
           <div class="relative flex-1">
             <i data-lucide="search" class="w-5 h-5 absolute left-3.5 top-3.5 text-slate-400"></i>
             <input type="text" id="memberInput" placeholder="พิมพ์รหัสสมาชิก หรือ เบอร์โทรศัพท์"
-                   class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-sm bg-slate-50 focus:bg-white transition"
+                   class="w-full pl-11 pr-4 py-3 rounded-2xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e] font-mono text-sm bg-slate-50 focus:bg-white transition"
                    onkeydown="if(event.key==='Enter') lookupMember()">
           </div>
-          <button onclick="lookupMember()" class="bg-slate-900 hover:bg-slate-800 active:scale-95 text-white px-5 py-3 rounded-2xl text-sm font-semibold transition flex items-center space-x-1.5">
+          <button onclick="lookupMember()" class="bg-[#7a0c1e] hover:bg-[#630917] active:scale-95 text-white px-5 py-3 rounded-2xl text-sm font-semibold transition flex items-center space-x-1.5 shadow-sm">
             <span>ค้นหา</span>
           </button>
         </div>
       </div>
 
       <!-- Member Profile Card (Hidden by default, shown when found) -->
-      <div id="memberFoundCard" class="hidden bg-gradient-to-br from-slate-50 to-emerald-50/40 rounded-2xl p-4 border border-emerald-200/60 flex items-center justify-between">
+      <div id="memberFoundCard" class="hidden bg-gradient-to-br from-slate-50 to-rose-50/50 rounded-2xl p-4 border border-rose-200/70 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <img id="mAvatar" src="https://via.placeholder.com/100" class="w-12 h-12 rounded-2xl object-cover border border-emerald-300">
+          <img id="mAvatar" src="https://via.placeholder.com/100" class="w-12 h-12 rounded-2xl object-cover border border-rose-300">
           <div>
             <div class="flex items-center space-x-2">
               <h3 id="mName" class="font-bold text-slate-900 text-sm">-</h3>
@@ -84,7 +84,7 @@
         </div>
         <div class="text-right">
           <p class="text-[11px] text-slate-400">แต้มปัจจุบัน</p>
-          <p class="text-xl font-black text-emerald-600"><span id="mPoints">0</span> <span class="text-xs font-normal text-slate-500">แต้ม</span></p>
+          <p class="text-xl font-black text-[#7a0c1e]"><span id="mPoints">0</span> <span class="text-xs font-normal text-slate-500">แต้ม</span></p>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
     <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200/80 space-y-5">
       <div class="border-b border-slate-100 pb-3">
         <h2 class="font-bold text-base text-slate-800 flex items-center space-x-2">
-          <i data-lucide="calculator" class="w-5 h-5 text-emerald-600"></i>
+          <i data-lucide="calculator" class="w-5 h-5 text-[#7a0c1e]"></i>
           <span>2. ระบุยอดเงินที่ลูกค้าซื้อสินค้า</span>
         </h2>
         <p class="text-xs text-slate-400 mt-0.5">ระบบจะคำนวณ 1 บาท = 1 แต้ม อัตโนมัติ</p>
@@ -105,7 +105,7 @@
         <div class="relative">
           <span class="absolute left-4 top-3 text-2xl font-bold text-slate-400">฿</span>
           <input type="number" id="purchaseAmount" step="1" min="1" placeholder="0.00" oninput="updatePointPreview()"
-                 class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-2 border-emerald-400 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 text-3xl font-black text-slate-900 tracking-tight">
+                 class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-2 border-rose-300 focus:outline-none focus:ring-4 focus:ring-rose-500/20 text-3xl font-black text-slate-900 tracking-tight">
         </div>
 
         <!-- Quick Amount Chips -->
@@ -123,29 +123,29 @@
       <div class="space-y-1">
         <label class="text-xs font-medium text-slate-500">หมายเหตุ / เลขที่ใบเสร็จ (ถ้ามี)</label>
         <input type="text" id="billNote" placeholder="เช่น บิล #1024, ค่ากาแฟและขนม" 
-               class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500">
+               class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:ring-2 focus:ring-[#7a0c1e]">
       </div>
 
       <!-- Real-time Point Preview Banner -->
-      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center justify-between">
+      <div class="bg-rose-50/70 border border-rose-200/80 rounded-2xl p-4 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold">
+          <div class="w-10 h-10 rounded-xl bg-[#7a0c1e] text-white flex items-center justify-center font-bold shadow-sm">
             <i data-lucide="sparkles" class="w-5 h-5"></i>
           </div>
           <div>
-            <p class="text-xs text-emerald-800 font-semibold">แต้มที่จะได้รับเข้า LINE ทันที</p>
-            <p class="text-xs text-emerald-600">อัตราคำนวณ 1 บาท : 1 แต้ม</p>
+            <p class="text-xs text-rose-950 font-semibold">แต้มที่จะได้รับเข้า LINE ทันที</p>
+            <p class="text-xs text-rose-700">อัตราคำนวณ 1 บาท : 1 แต้ม</p>
           </div>
         </div>
         <div class="text-right">
-          <span id="pointsPreview" class="text-3xl font-black text-emerald-600">+0</span>
-          <span class="text-xs font-bold text-emerald-700 ml-1">แต้ม</span>
+          <span id="pointsPreview" class="text-3xl font-black text-[#7a0c1e]">+0</span>
+          <span class="text-xs font-bold text-rose-900 ml-1">แต้ม</span>
         </div>
       </div>
 
       <!-- Submit Button -->
       <button onclick="submitPoints()" id="submitBtn"
-              class="w-full bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-emerald-500/25 flex items-center justify-center space-x-2 transition">
+              class="w-full bg-[#7a0c1e] hover:bg-[#630917] active:scale-[0.99] text-white py-4 rounded-2xl font-bold text-base shadow-lg shadow-rose-950/20 flex items-center justify-center space-x-2 transition">
         <i data-lucide="check-circle" class="w-5 h-5"></i>
         <span>บันทึกแต้ม & ส่งแจ้งเตือนเข้า LINE</span>
       </button>
@@ -206,7 +206,7 @@
   <!-- Success Notification Modal -->
   <div id="successModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl animate-in fade-in zoom-in duration-150">
-      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+      <div class="w-16 h-16 bg-rose-100 text-[#7a0c1e] rounded-full flex items-center justify-center mx-auto">
         <i data-lucide="check" class="w-8 h-8"></i>
       </div>
       <div>
@@ -224,7 +224,7 @@
         </div>
         <div class="flex justify-between">
           <span class="text-slate-400">แต้มที่ได้รับ:</span>
-          <span id="succPoints" class="font-bold text-emerald-600">+0 แต้ม</span>
+          <span id="succPoints" class="font-bold text-[#7a0c1e]">+0 แต้ม</span>
         </div>
         <div class="flex justify-between">
           <span class="text-slate-400">แต้มสะสมทั้งหมด:</span>
@@ -480,7 +480,7 @@
                   <span class="text-slate-400 mx-1">•</span>
                   <span class="text-slate-500">${t.description}</span>
                 </div>
-                <span class="font-bold ${isEarn ? 'text-emerald-600' : 'text-rose-600'}">
+                <span class="font-bold ${isEarn ? 'text-[#7a0c1e]' : 'text-slate-500'}">
                   ${isEarn ? '+' : ''}${t.points} แต้ม
                 </span>
               </div>

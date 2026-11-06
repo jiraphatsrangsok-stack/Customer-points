@@ -17,20 +17,20 @@
   <header class="bg-slate-900 text-white border-b border-slate-800">
     <div class="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div class="flex items-center space-x-3">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center font-black text-2xl text-white shadow-lg shadow-emerald-500/20">
+        <div class="w-12 h-12 rounded-2xl bg-[#7a0c1e] flex items-center justify-center font-black text-2xl text-white shadow-lg shadow-rose-950/30">
           ฿
         </div>
         <div>
           <div class="flex items-center space-x-2">
             <h1 class="text-xl font-bold tracking-tight">ระบบบริหารจัดการแต้มสะสม LINE OA</h1>
-            <span class="bg-emerald-500/20 text-emerald-400 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-emerald-500/30">1 บาท = 1 แต้ม</span>
+            <span class="bg-rose-950/80 text-rose-300 text-xs px-2.5 py-0.5 rounded-full font-semibold border border-rose-800/40">1 บาท = 1 แต้ม</span>
           </div>
           <p class="text-xs text-slate-400 mt-0.5" id="shopSubTitle">ระบบจัดการสมาชิก แต้มสะสม และประวัติการทำรายการ</p>
         </div>
       </div>
 
       <div class="flex items-center space-x-3">
-        <a href="/cashier/" target="_blank" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow transition">
+        <a href="/cashier/" target="_blank" class="bg-[#7a0c1e] hover:bg-[#630917] text-white px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow transition">
           <i data-lucide="store" class="w-4 h-4"></i>
           <span>เปิดหน้าจอแคชเชียร์หน้าร้าน</span>
         </a>
@@ -53,12 +53,12 @@
       </div>
 
       <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm flex items-center space-x-4">
-        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-[#7a0c1e] flex items-center justify-center">
           <i data-lucide="coins" class="w-6 h-6"></i>
         </div>
         <div>
           <p class="text-xs text-slate-400 font-medium">แต้มสะสมคงเหลือในระบบ</p>
-          <p id="statPoints" class="text-2xl font-black text-emerald-600 mt-0.5">0 แต้ม</p>
+          <p id="statPoints" class="text-2xl font-black text-[#7a0c1e] mt-0.5">0 แต้ม</p>
         </div>
       </div>
 
@@ -74,17 +74,17 @@
     </div>
 
     <!-- LIFF Link Banner for Rich Menu -->
-    <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-6 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="bg-gradient-to-r from-[#7a0c1e] via-[#630917] to-[#42040d] rounded-3xl p-6 text-white shadow-lg shadow-rose-950/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div class="space-y-1">
         <div class="flex items-center space-x-2">
-          <i data-lucide="smartphone" class="w-5 h-5 text-emerald-300"></i>
+          <i data-lucide="smartphone" class="w-5 h-5 text-amber-300"></i>
           <h3 class="font-bold text-base">ลิงก์บัตรสมาชิก LIFF สำหรับใส่ใน Rich Menu LINE OA</h3>
         </div>
-        <p class="text-xs text-emerald-100">นำลิงก์นี้ไปผูกกับปุ่ม "บัตรสมาชิก / เช็คแต้ม" ใน LINE Official Account Manager</p>
+        <p class="text-xs text-rose-200">นำลิงก์นี้ไปผูกกับปุ่ม "บัตรสมาชิก / เช็คแต้ม" ใน LINE Official Account Manager</p>
       </div>
-      <div class="flex items-center space-x-2 bg-emerald-950/40 p-2 rounded-2xl border border-emerald-400/30">
-        <code id="liffUrlCode" class="text-xs font-mono px-3 text-emerald-200 select-all">https://liff.line.me/2012400848-86Z8gVyN</code>
-        <button onclick="copyLiffUrl()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1">
+      <div class="flex items-center space-x-2 bg-black/40 p-2 rounded-2xl border border-rose-400/30">
+        <code id="liffUrlCode" class="text-xs font-mono px-3 text-rose-200 select-all">https://liff.line.me/2012400848-86Z8gVyN</code>
+        <button onclick="copyLiffUrl()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 shadow">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i>
           <span>คัดลอก</span>
         </button>
@@ -92,22 +92,23 @@
     </div>
 
     <!-- Quick Rewards Action Banner -->
-    <div class="bg-gradient-to-r from-amber-500 to-orange-600 rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="bg-gradient-to-r from-[#8b1528] via-[#680a19] to-[#42040d] rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div class="space-y-1">
         <div class="flex items-center space-x-2">
-          <i data-lucide="gift" class="w-6 h-6 text-amber-200"></i>
+          <i data-lucide="gift" class="w-6 h-6 text-amber-300"></i>
           <h3 class="font-bold text-lg">จัดการของรางวัลสะสมแต้ม (Reward Catalog)</h3>
         </div>
-        <p class="text-xs text-amber-100">แก้ไขแต้มที่ใช้แลก เติมสต็อก หรือเพิ่มของรางวัลใหม่ของร้านน้ำพริกแม่เฉลา</p>
+        <p class="text-xs text-rose-100">แก้ไขแต้มที่ใช้แลก เติมสต็อก หรือเพิ่มของรางวัลใหม่ของร้านน้ำพริกแม่เฉลา</p>
       </div>
       <div class="flex items-center space-x-2">
-        <button onclick="openRewardModal()" class="bg-white text-slate-900 hover:bg-amber-50 font-bold px-4 py-2.5 rounded-xl text-xs transition shadow flex items-center space-x-1.5">
-          <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-600"></i>
+        <button onclick="openRewardModal()" class="bg-white text-slate-900 hover:bg-rose-50 font-bold px-4 py-2.5 rounded-xl text-xs transition shadow flex items-center space-x-1.5">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-[#7a0c1e]"></i>
           <span>+ เพิ่มของรางวัลใหม่</span>
         </button>
-        <a href="#rewardsSection" class="bg-amber-950/40 hover:bg-amber-950/60 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition border border-amber-300/30 flex items-center space-x-1">
-          <span>ดูและแก้ไขทั้งหมด ↓</span>
-        </a>
+        <button onclick="openRewardsListModal()" class="bg-black/30 hover:bg-black/50 text-white font-semibold px-4 py-2.5 rounded-xl text-xs transition border border-rose-300/30 flex items-center space-x-1">
+          <i data-lucide="eye" class="w-4 h-4"></i>
+          <span>ดูและแก้ไขของรางวัลทั้งหมด</span>
+        </button>
       </div>
     </div>
 
@@ -116,7 +117,7 @@
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
-            <i data-lucide="user-check" class="w-5 h-5 text-emerald-600"></i>
+            <i data-lucide="user-check" class="w-5 h-5 text-[#7a0c1e]"></i>
             <span>รายชื่อสมาชิกร้านค้า</span>
           </h2>
           <p class="text-xs text-slate-400 mt-0.5">ข้อมูลสมาชิกที่เปิดบัตรผ่าน LINE OA</p>
@@ -136,36 +137,15 @@
               <th class="py-3 px-4 text-right">ยอดซื้อสะสม</th>
               <th class="py-3 px-4 text-right">แต้มคงเหลือ</th>
               <th class="py-3 px-4 text-center">วันที่สมัคร</th>
+              <th class="py-3 px-4 text-center">จัดการ</th>
             </tr>
           </thead>
           <tbody id="membersTableBody">
             <tr>
-              <td colspan="6" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก</td>
+              <td colspan="7" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก</td>
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <!-- Rewards Management Section -->
-    <div id="rewardsSection" class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6 scroll-mt-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
-        <div>
-          <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
-            <i data-lucide="gift" class="w-5 h-5 text-emerald-600"></i>
-            <span>จัดการของรางวัล (Reward Catalog)</span>
-          </h2>
-          <p class="text-xs text-slate-400 mt-0.5">เพิ่ม แก้ไข หรือลบของรางวัลที่ให้ลูกค้าใช้แต้มแลก</p>
-        </div>
-        <button onclick="openRewardModal()" class="bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow">
-          <i data-lucide="plus" class="w-4 h-4"></i>
-          <span>เพิ่มของรางวัลใหม่</span>
-        </button>
-      </div>
-
-      <!-- Rewards Grid -->
-      <div id="rewardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Rendered by JS -->
       </div>
     </div>
 
@@ -203,6 +183,35 @@
 
   </main>
 
+  <!-- All Rewards Catalog Modal -->
+  <div id="rewardsListModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto space-y-4 shadow-2xl animate-in fade-in zoom-in duration-150">
+      <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
+            <i data-lucide="gift" class="w-5 h-5 text-amber-500"></i>
+            <span>คลังของรางวัล (Reward Catalog)</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">รายการของรางวัลทั้งหมดของร้านน้ำพริกแม่เฉลา</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="openRewardModal()" class="bg-[#7a0c1e] hover:bg-[#630917] active:scale-95 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 shadow">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>เพิ่มรางวัลใหม่</span>
+          </button>
+          <button onclick="closeRewardsListModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Rewards Grid inside Modal -->
+      <div id="rewardsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
   <!-- Reward Add / Edit Modal -->
   <div id="rewardModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl animate-in fade-in zoom-in duration-150">
@@ -219,26 +228,26 @@
         <div class="space-y-1">
           <label class="font-semibold text-slate-700">ชื่อของรางวัล <span class="text-rose-500">*</span></label>
           <input type="text" id="rwTitle" required placeholder="เช่น ฟรี! น้ำพริกกระปุกเล็ก 1 กระปุก, ส่วนลด 50 บาท"
-                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e]">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div class="space-y-1">
             <label class="font-semibold text-slate-700">แต้มที่ต้องใช้ <span class="text-rose-500">*</span></label>
             <input type="number" id="rwPoints" required min="1" placeholder="เช่น 50"
-                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-600">
+                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e] font-bold text-[#7a0c1e]">
           </div>
           <div class="space-y-1">
             <label class="font-semibold text-slate-700">จำนวนสต็อก (ชิ้น) <span class="text-rose-500">*</span></label>
             <input type="number" id="rwStock" required min="0" placeholder="เช่น 50"
-                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                   class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e]">
           </div>
         </div>
 
         <div class="space-y-1">
           <label class="font-semibold text-slate-700">ลิงก์รูปภาพ (Image URL)</label>
           <input type="url" id="rwImage" placeholder="https://..."
-                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-[11px]">
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e] font-mono text-[11px]">
           <!-- Quick Preset Images -->
           <div class="flex flex-wrap gap-1.5 pt-1">
             <button type="button" onclick="setPresetImg('chili')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-[10px] text-slate-600">รูปน้ำพริก</button>
@@ -250,14 +259,14 @@
         <div class="space-y-1">
           <label class="font-semibold text-slate-700">คำอธิบาย / เงื่อนไขการใช้</label>
           <textarea id="rwDesc" rows="2" placeholder="เช่น ใช้เป็นส่วนลดเมื่อซื้อครบ 100 บาทขึ้นไป"
-                    class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    class="w-full px-3.5 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#7a0c1e]"></textarea>
         </div>
 
         <div class="pt-2 flex space-x-2">
           <button type="button" onclick="closeRewardModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
             ยกเลิก
           </button>
-          <button type="submit" id="saveRewardBtn" class="flex-1 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold transition shadow">
+          <button type="submit" id="saveRewardBtn" class="flex-1 py-2.5 rounded-xl bg-[#7a0c1e] hover:bg-[#630917] text-white font-bold transition shadow shadow-rose-950/20">
             บันทึกของรางวัล
           </button>
         </div>
@@ -307,7 +316,7 @@
               <img src="${r.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&fit=crop'}" 
                    class="w-full h-36 object-cover" alt="${r.title}">
               <div class="absolute top-2 right-2 flex space-x-1">
-                <span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">
+                <span class="bg-[#7a0c1e] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow">
                   ${Number(r.pointsRequired).toLocaleString()} แต้ม
                 </span>
               </div>
@@ -369,6 +378,15 @@
 
     function closeRewardModal() {
       document.getElementById('rewardModal').classList.add('hidden');
+    }
+
+    function openRewardsListModal() {
+      loadRewards();
+      document.getElementById('rewardsListModal').classList.remove('hidden');
+    }
+
+    function closeRewardsListModal() {
+      document.getElementById('rewardsListModal').classList.add('hidden');
     }
 
     function setPresetImg(type) {
@@ -446,6 +464,25 @@
       }
     }
 
+    async function deleteMember(id, name) {
+      if (!confirm(`คุณแน่ใจหรือไม่ว่าต้องการลบสมาชิก "${name}" (${id}) ออกจากระบบ?`)) return;
+
+      try {
+        const res = await fetch(`/api/admin/members/${id}`, {
+          method: 'DELETE'
+        });
+        const json = await res.json();
+        if (json.success) {
+          await loadDashboardData();
+          alert(json.message);
+        } else {
+          alert('ลบสมาชิกไม่สำเร็จ: ' + json.message);
+        }
+      } catch (err) {
+        alert('เกิดข้อผิดพลาด: ' + err.message);
+      }
+    }
+
     async function loadDashboardData() {
       try {
         // 1. Settings
@@ -480,7 +517,7 @@
         // Render Members Table
         const mBody = document.getElementById('membersTableBody');
         if (members.length === 0) {
-          mBody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก (รอสมาชิกลงทะเบียนผ่าน LINE OA)</td></tr>`;
+          mBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">ยังไม่มีข้อมูลสมาชิก (รอสมาชิกลงทะเบียนผ่าน LINE OA)</td></tr>`;
         } else {
           mBody.innerHTML = members.map(m => {
             const dateStr = new Date(m.createdAt).toLocaleDateString('th-TH');
@@ -493,8 +530,15 @@
                 </td>
                 <td class="py-3 px-4"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px] font-bold">${m.tier || 'Member'}</span></td>
                 <td class="py-3 px-4 text-right font-medium">฿${Number(m.totalSpent || 0).toLocaleString()}</td>
-                <td class="py-3 px-4 text-right font-bold text-emerald-600">${Number(m.points || 0).toLocaleString()} แต้ม</td>
+                <td class="py-3 px-4 text-right font-bold text-[#7a0c1e]">${Number(m.points || 0).toLocaleString()} แต้ม</td>
                 <td class="py-3 px-4 text-center text-slate-400">${dateStr}</td>
+                <td class="py-3 px-4 text-center">
+                  <button onclick="deleteMember('${m.id}', '${m.displayName}')" 
+                          class="p-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-600 transition inline-flex items-center justify-center" 
+                          title="ลบสมาชิกที่ไม่ได้ใช้แล้ว">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </td>
               </tr>
             `;
           }).join('');
@@ -514,7 +558,7 @@
                 <td class="py-3 px-4 font-mono font-bold text-slate-700">${t.userId}</td>
                 <td class="py-3 px-4 text-slate-800">${t.description}</td>
                 <td class="py-3 px-4 text-right text-slate-600">฿${Number(t.amount || 0).toLocaleString()}</td>
-                <td class="py-3 px-4 text-right font-bold ${isEarn ? 'text-emerald-600' : 'text-rose-600'}">
+                <td class="py-3 px-4 text-right font-bold ${isEarn ? 'text-[#7a0c1e]' : 'text-slate-500'}">
                   ${isEarn ? '+' : ''}${Number(t.points).toLocaleString()}
                 </td>
                 <td class="py-3 px-4 text-right font-medium text-slate-700">${Number(t.balanceAfter).toLocaleString()}</td>

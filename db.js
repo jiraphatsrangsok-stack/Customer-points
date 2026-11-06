@@ -289,6 +289,19 @@ const db = {
     const deleted = data.rewards.splice(idx, 1)[0];
     writeDb(data);
     return deleted;
+  },
+
+  deleteUser(id) {
+    const data = readDb();
+    const idx = data.users.findIndex(u => u.id === id || u.lineUserId === id);
+    if (idx === -1) {
+      throw new Error('ไม่พบข้อมูลสมาชิกที่ต้องการลบ');
+    }
+    const deletedUser = data.users.splice(idx, 1)[0];
+    // ลบประวัติทำรายการของสมาชิกคนนี้ด้วย เพื่อความสะอาดของข้อมูล
+    data.transactions = (data.transactions || []).filter(t => t.userId !== deletedUser.id);
+    writeDb(data);
+    return deletedUser;
   }
 };
 

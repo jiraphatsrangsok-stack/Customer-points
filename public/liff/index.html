@@ -16,7 +16,7 @@
   <style>
     body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; }
     .card-gradient-gold {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: linear-gradient(135deg, #7a0c1e 0%, #4c0612 50%, #290309 100%);
     }
   </style>
 </head>
@@ -24,7 +24,7 @@
 
   <!-- Loading State Screen -->
   <div id="loadingScreen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 space-y-4">
-    <div class="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+    <div class="w-12 h-12 border-4 border-[#7a0c1e] border-t-transparent rounded-full animate-spin"></div>
     <div class="text-center">
       <h3 class="font-bold text-slate-800 text-base">กำลังโหลดบัตรสมาชิก...</h3>
       <p class="text-xs text-slate-400 mt-1">กำลังเชื่อมต่อข้อมูลกับ LINE Official Account</p>
@@ -52,7 +52,7 @@
     <div class="flex items-center justify-between py-2">
       <div class="flex items-center space-x-3">
         <img id="userAvatar" src="https://via.placeholder.com/100" 
-             class="w-12 h-12 rounded-full border-2 border-emerald-500 object-cover shadow-sm" alt="Avatar">
+             class="w-12 h-12 rounded-full border-2 border-[#7a0c1e] object-cover shadow-sm" alt="Avatar">
         <div>
           <h1 id="userName" class="font-bold text-lg text-slate-900 leading-tight">-</h1>
           <p id="userPhone" class="text-xs text-slate-500">สมาชิกคนสำคัญ</p>
@@ -66,37 +66,37 @@
     <!-- Membership Card -->
     <div class="card-gradient-gold rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
       <!-- Decorative background blur -->
-      <div class="absolute -right-8 -top-8 w-36 h-36 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -right-8 -top-8 w-36 h-36 bg-rose-500/25 rounded-full blur-2xl pointer-events-none"></div>
       <div class="absolute -left-8 -bottom-8 w-36 h-36 bg-amber-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
       <div class="flex justify-between items-start relative z-10">
         <div>
-          <span class="text-xs font-semibold tracking-wider uppercase text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30" id="cardTier">
+          <span class="text-xs font-semibold tracking-wider uppercase text-rose-200 bg-rose-950/70 px-3 py-1 rounded-full border border-rose-400/30" id="cardTier">
             Member
           </span>
-          <p class="text-xs text-slate-400 mt-2">ยอดสะสม (1 บาท = 1 แต้ม)</p>
+          <p class="text-xs text-rose-200 mt-2">ยอดสะสม (1 บาท = 1 แต้ม)</p>
         </div>
         <div class="text-right">
-          <span class="text-xs text-slate-400" id="shopName">My Shop</span>
+          <span class="text-xs text-rose-200 font-medium" id="shopName">My Shop</span>
         </div>
       </div>
 
       <!-- Point Counter -->
       <div class="my-6 text-center relative z-10">
-        <span class="text-xs text-slate-300">แต้มคงเหลือของคุณ</span>
+        <span class="text-xs text-rose-200">แต้มคงเหลือของคุณ</span>
         <div class="flex items-center justify-center space-x-2 mt-1">
           <span id="userPoints" class="text-5xl font-black tracking-tight text-white">0</span>
-          <span class="text-emerald-400 font-bold text-lg">แต้ม</span>
+          <span class="text-amber-300 font-bold text-lg">แต้ม</span>
         </div>
       </div>
 
       <!-- Member Code & QR Toggle -->
-      <div class="pt-4 border-t border-slate-700/60 flex justify-between items-center relative z-10">
+      <div class="pt-4 border-t border-rose-900/60 flex justify-between items-center relative z-10">
         <div>
-          <p class="text-[10px] text-slate-400 uppercase tracking-widest">รหัสสมาชิก</p>
-          <p id="memberId" class="text-sm font-mono font-bold tracking-wider text-slate-200">MEM-0000</p>
+          <p class="text-[10px] text-rose-300 uppercase tracking-widest">รหัสสมาชิก</p>
+          <p id="memberId" class="text-sm font-mono font-bold tracking-wider text-white">MEM-0000</p>
         </div>
-        <button onclick="openQrModal()" class="flex items-center space-x-1.5 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow transition">
+        <button onclick="openQrModal()" class="flex items-center space-x-1.5 bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow transition">
           <i data-lucide="qr-code" class="w-4 h-4"></i>
           <span>สแกนรับแต้ม</span>
         </button>
@@ -106,7 +106,7 @@
     <!-- Quick Action / Status Bar -->
     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+        <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-[#7a0c1e]">
           <i data-lucide="coins" class="w-5 h-5"></i>
         </div>
         <div>
@@ -115,14 +115,14 @@
         </div>
       </div>
       <div class="text-right">
-        <span class="text-xs bg-emerald-100 text-emerald-800 font-medium px-2.5 py-1 rounded-lg">1 บ. = 1 แต้ม</span>
+        <span class="text-xs bg-rose-100 text-[#7a0c1e] font-semibold px-2.5 py-1 rounded-lg">1 บ. = 1 แต้ม</span>
       </div>
     </div>
 
     <!-- Tabs: ของรางวัล vs ประวัติ -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-2 flex space-x-1">
       <button id="tabRewardsBtn" onclick="switchTab('rewards')" 
-              class="flex-1 py-2 text-sm font-semibold rounded-xl transition bg-emerald-500 text-white flex justify-center items-center space-x-1.5">
+              class="flex-1 py-2 text-sm font-semibold rounded-xl transition bg-[#7a0c1e] text-white flex justify-center items-center space-x-1.5">
         <i data-lucide="gift" class="w-4 h-4"></i>
         <span>แลกของรางวัล</span>
       </button>
@@ -174,7 +174,7 @@
   <!-- Redeemed Reward Coupon Modal -->
   <div id="couponModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl animate-in fade-in zoom-in duration-200">
-      <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+      <div class="w-16 h-16 bg-rose-100 text-[#7a0c1e] rounded-full flex items-center justify-center mx-auto text-2xl">
         🎉
       </div>
       <div>
@@ -334,7 +334,7 @@
         return `
           <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-xl ${isEarn ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} flex items-center justify-center font-bold">
+              <div class="w-10 h-10 rounded-xl ${isEarn ? 'bg-rose-50 text-[#7a0c1e]' : 'bg-slate-100 text-slate-600'} flex items-center justify-center font-bold">
                 <i data-lucide="${isEarn ? 'arrow-down-left' : 'gift'}" class="w-5 h-5"></i>
               </div>
               <div>
@@ -343,7 +343,7 @@
               </div>
             </div>
             <div class="text-right">
-              <p class="font-bold text-sm ${isEarn ? 'text-emerald-600' : 'text-rose-600'}">
+              <p class="font-bold text-sm ${isEarn ? 'text-[#7a0c1e]' : 'text-slate-500'}">
                 ${isEarn ? '+' : ''}${t.points.toLocaleString()} แต้ม
               </p>
               <p class="text-[10px] text-slate-400">คงเหลือ ${t.balanceAfter} แต้ม</p>
@@ -376,7 +376,7 @@
             const pointDiff = r.pointsRequired - userPoints;
 
             let btnText = 'กดแลกของรางวัล';
-            let btnClass = 'bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 shadow shadow-emerald-500/20';
+            let btnClass = 'bg-[#7a0c1e] hover:bg-[#630917] text-white active:scale-95 shadow shadow-rose-950/20';
 
             if (r.stock <= 0) {
               btnText = 'ของรางวัลหมด';
@@ -460,13 +460,13 @@
       if (tab === 'rewards') {
         rewardsTab.classList.remove('hidden');
         historyTab.classList.add('hidden');
-        tabRewardsBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition bg-emerald-500 text-white flex justify-center items-center space-x-1.5';
+        tabRewardsBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition bg-[#7a0c1e] text-white flex justify-center items-center space-x-1.5';
         tabHistoryBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition text-slate-600 hover:bg-slate-50 flex justify-center items-center space-x-1.5';
       } else {
         rewardsTab.classList.add('hidden');
         historyTab.classList.remove('hidden');
         tabRewardsBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition text-slate-600 hover:bg-slate-50 flex justify-center items-center space-x-1.5';
-        tabHistoryBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition bg-emerald-500 text-white flex justify-center items-center space-x-1.5';
+        tabHistoryBtn.className = 'flex-1 py-2 text-sm font-semibold rounded-xl transition bg-[#7a0c1e] text-white flex justify-center items-center space-x-1.5';
       }
       lucide.createIcons();
     }

@@ -274,6 +274,21 @@ const server = http.createServer(async (req, res) => {
     return sendJson(res, 200, { success: true, data: users });
   }
 
+  // 7.1 DELETE /api/admin/members/:id (ลบสมาชิกที่ไม่ได้ใช้งานแล้ว)
+  if (pathname.startsWith('/api/admin/members/') && method === 'DELETE') {
+    const memberId = pathname.replace('/api/admin/members/', '').trim();
+    try {
+      const deleted = db.deleteUser(memberId);
+      return sendJson(res, 200, {
+        success: true,
+        message: `ลบสมาชิก ${deleted.displayName} (${deleted.id}) ออกจากระบบสำเร็จ`,
+        data: deleted
+      });
+    } catch (err) {
+      return sendJson(res, 400, { success: false, message: err.message });
+    }
+  }
+
   // 8. GET /api/admin/transactions
   if (pathname === '/api/admin/transactions' && method === 'GET') {
     const txns = db.getAllTransactions();
